@@ -88,7 +88,7 @@ public class TemaLabValidatorTests {
         String[] params2 = new String[] {"1", "Test 2", "2", "1"};
         int size = 0;
         temaLabXMLService.add(params1);
-        temaLabXMLService.add(params1);
+        temaLabXMLService.add(params2);
         for (TemaLab temaLab : temaLabXMLService.findAll()) {
             size++;
         }
