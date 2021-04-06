@@ -11,6 +11,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.Iterator;
+
 public class TemaLabValidatorTests {
 
     private TemaLabValidator temaLabValidator;
@@ -32,20 +34,12 @@ public class TemaLabValidatorTests {
     public void testAddAssignmentTC1() throws ValidatorException {
         exceptionRule.expect(NumberFormatException.class);
 
-        String[] params = new String[] {null, null, null, null};
-        temaLabXMLService.add(params);
-    }
-
-    @Test
-    public void testAddAssignmentTC2() throws ValidatorException {
-        exceptionRule.expect(NumberFormatException.class);
-
         String[] params = new String[] {"", "Test", "12", "10"};
         temaLabXMLService.add(params);
     }
 
     @Test
-    public void testAddAssignmentTC3() throws ValidatorException {
+    public void testAddAssignmentTC2() throws ValidatorException {
         exceptionRule.expect(ValidatorException.class);
         exceptionRule.expectMessage("Descriere tema invalida\n");
 
@@ -54,7 +48,7 @@ public class TemaLabValidatorTests {
     }
 
     @Test
-    public void testAddAssignmentTC4() throws ValidatorException {
+    public void testAddAssignmentTC3() throws ValidatorException {
         exceptionRule.expect(ValidatorException.class);
         exceptionRule.expectMessage("Sapatamana predarii invalida\n");
 
@@ -63,7 +57,7 @@ public class TemaLabValidatorTests {
     }
 
 //    @Test
-//    public void testAddAssignmentTC4() throws ValidatorException {
+//    public void testAddAssignmentTC3() throws ValidatorException {
 //        exceptionRule.expect(ValidatorException.class);
 //        exceptionRule.expectMessage("Sapatamana predarii invalida\n");
 //
@@ -72,7 +66,7 @@ public class TemaLabValidatorTests {
 //    }
 
     @Test
-    public void testAddAssignmentTC5() throws ValidatorException {
+    public void testAddAssignmentTC4() throws ValidatorException {
         exceptionRule.expect(ValidatorException.class);
         exceptionRule.expectMessage("Termen limita invalid\n");
 
@@ -81,7 +75,7 @@ public class TemaLabValidatorTests {
     }
 
     @Test
-    public void testAddAssignmentTC6() throws ValidatorException {
+    public void testAddAssignmentTC5() throws ValidatorException {
         String[] params = new String[] {"1", "Test", "2", "1"};
 
         temaLabXMLService.add(params);
@@ -89,11 +83,16 @@ public class TemaLabValidatorTests {
     }
 
     @Test
-    public void testAddAssignmentTC7() throws ValidatorException {
+    public void testAddAssignmentTC6() throws ValidatorException {
         String[] params1 = new String[] {"1", "Test 1", "2", "1"};
-
+        String[] params2 = new String[] {"1", "Test 2", "2", "1"};
+        int size = 0;
         temaLabXMLService.add(params1);
         temaLabXMLService.add(params1);
-        Assert.assertNotNull(temaLabXMLService.findOne(1));
+        for (TemaLab temaLab : temaLabXMLService.findAll()) {
+            size++;
+        }
+        Assert.assertEquals("Element IDs are not unique.", 1, size);
+        Assert.assertEquals("New element replaced previous.", "Test 1", temaLabXMLService.findOne(1).getDescriere());
     }
 }
