@@ -30,19 +30,18 @@ public class TemaLabValidatorTests {
 
     @Test
     public void testAddAssignmentTC1() throws ValidatorException {
-        exceptionRule.expect(IllegalArgumentException.class);
-        exceptionRule.expectMessage("Entity can not be null!\n");
+        exceptionRule.expect(NumberFormatException.class);
 
-        temaLabXMLRepo.save(null);
+        String[] params = new String[] {null, null, null, null};
+        temaLabXMLService.add(params);
     }
 
     @Test
     public void testAddAssignmentTC2() throws ValidatorException {
-        exceptionRule.expect(ValidatorException.class);
-        exceptionRule.expectMessage("Nr tema invalid\n");
+        exceptionRule.expect(NumberFormatException.class);
 
-        TemaLab temaLabFailID = new TemaLab(null, "Test", 12, 10);
-        temaLabXMLRepo.save(temaLabFailID);
+        String[] params = new String[] {"", "Test", "12", "10"};
+        temaLabXMLService.add(params);
     }
 
     @Test
@@ -55,7 +54,7 @@ public class TemaLabValidatorTests {
     }
 
     @Test
-    public void testAddAssignmentTC4_1() throws ValidatorException {
+    public void testAddAssignmentTC4() throws ValidatorException {
         exceptionRule.expect(ValidatorException.class);
         exceptionRule.expectMessage("Sapatamana predarii invalida\n");
 
